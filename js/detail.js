@@ -14,6 +14,8 @@ class Detail {
         this.$('.preview_list').addEventListener('click',this.clickPNFn.bind(this));
         // 给数量 的+  - 设置点击事件（事件委托）
         this.$('.choose_amount').addEventListener('click',this.clickPigeFn.bind(this));
+        //给加入购物车绑定点击事件
+        this.$('.addCar').addEventListener('click',this.clickAddFn.bind(this));
     }
     //鼠标移入小图事件
     overFn(){
@@ -151,7 +153,12 @@ class Detail {
         }
         
     }
-
+    //加入购物车的点击事件
+    async clickAddFn(){
+        // let goodsId =e.target.parentNode.dataset.id;
+        // let  unameId = localStorage.getItem('user_id');
+        let res =await axios.get(`http://localhost:8888/goods/item?`)
+    }
 
     //获取节点函数
     $(tag) {
