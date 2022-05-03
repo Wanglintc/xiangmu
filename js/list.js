@@ -1,14 +1,22 @@
 class list{
     constructor(){
+        //绑定个全局变量
+        this.Num = 1;
         //获取商品列表  默认一页20条
-        this.getData();
+        this.getData(1);
         //给商品列表的加入购物车  绑定事件
-        this.$('.sk_bd ul').addEventListener('click', this.clickAddFn.bind(this))
+        this.$('.sk_bd ul').addEventListener('click', this.clickAddFn.bind(this));
+        //给列表1到10绑定事件
+        this.$('.page_num').addEventListener('click',this.clickNumFn.bind(this));
+        //给上一页  下一页绑定事件
+        this.$('.page_num').addEventListener('click',this.clickDIFn.bind(this));
+        //给跳转确定按钮绑定事件
+        this.$('.page_skip button').addEventListener('click',this.clickTiaoFn.bind(this));
 }
     //获取数据
-    async getData(a=1){
+    async getData(a){
     //发送异步请求  获取商品值  20
-    let { data , status} = await axios.get(`http://localhost:8888/goods/list?current${a}=&pagesize=20`);
+    let { data , status} = await axios.get(`http://localhost:8888/goods/list?current=${a}&pagesize=20`);
     // console.log(data,status);
     //判断status是否为200
     if (status == 200) {
@@ -74,9 +82,84 @@ class list{
         }
 
     }
+    //列表页数事件
+    clickNumFn(e){
+        if (e.target.className == 'pageNum') {
+            // console.log(e.target.innerHTML);
+            //发送页数请求并获取数据
+            this.getData(e.target.innerHTML-0);
+            // console.log( this.$('.page_num a'));
+            //删掉所有的类
+            this.$('.page_num a').forEach(val=>{
+                // console.log(val);
+                val.classList.remove('current');
+            })
+            //只给点击的这个 加上类
+            e.target.classList.add('current');
+            //保存点击的数量
+            this.Num = e.target.innerHTML;
+        }
+    }
+    //给上一页  下一页绑定事件
+    clickDIFn(e){
+        //当点击上一页时
+        if (e.target.className =='pn-prev') {
+            if (this.Num <=1) {
+                // e.target.style.pointerEvents = 'none';
+                this.Num = 2;
+            }
+            this.setFn(--this.Num);
+        }
+        //当点击下一页时
+        if (e.target.className =='pn-next') {
+            if (this.Num >=10) {
+                // e.target.style.pointerEvents = 'none';
+                this.Num = 9;
+            }
+            this.setFn(++this.Num);
+        }
 
-
-
+    }
+    setFn(index){
+         //发送页数请求并获取数据
+         this.getData(index);
+         // console.log( this.$('.page_num a'));
+         //删掉所有的类
+         this.$('.page_num a').forEach(val=>{
+             // console.log(val);
+             val.classList.remove('current');
+         })
+         //只给点击的这个 加上类
+        this.$('.page_num a')[index-1].classList.add('current');
+         //保存点击的数量
+         this.Num = index;
+    }
+    //给跳转确定按钮绑定点击事件
+    clickTiaoFn(){
+        //获取跳转的页数
+        let text = this.$('.page_skip input').value;
+        // console.log(text);
+        //确定text的范围1=<text<=10
+        if (text>10) {
+            text = 10;
+        }
+        if(text<1){
+            text = 1;
+        }
+        //跳转到第几页
+        this.getData(text);
+        //取消所有a标签中的这个类
+        this.$('.page_num a').forEach(val=>{
+            // console.log(val);
+            val.classList.remove('current');
+        })
+        //只给点击的这个 加上类
+        this.$('.page_num a')[text-1].classList.add('current');
+        //给input框里的值取消
+        this.$('.page_skip input').value = '';
+        //保存点击的数量
+        this.Num = text;
+    }
 
 
 

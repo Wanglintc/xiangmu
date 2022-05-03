@@ -17,7 +17,7 @@ class Detail {
         //给加入购物车绑定点击事件
         this.$('.addCar').addEventListener('click',this.clickAddFn.bind(this));
     }
-    //鼠标移入小图事件
+    //鼠标移入小图事件0
     overFn(){
         this.$('.big').style.display='block';
         this.$('.mask').style.display='block';

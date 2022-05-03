@@ -171,6 +171,22 @@ a.increment {
 	font: 16px "微软雅黑";
 }
 
+a.sum-btn1{
+	width: 110px;
+	height: 52px;
+	background: #E60012;
+	display: block;
+	color: #fff;
+	text-align: center;
+	/* font-size: 18px; */
+	font-family: "Microsoft YaHei";
+	line-height: 52px;
+}
+
+.sumprice-top{
+	display: flex;
+} 
+
 a.sum-btn {
 	position: relative;
 	display: block;

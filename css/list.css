@@ -150,7 +150,12 @@
 }
 .page_num .pn-prev,
 .page_num .pn-next {
+    display: inline-block;
     width: 83px;
+    height: 36px;
+    line-height: 36px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 .page_num .dotted,
 .page_num .current {

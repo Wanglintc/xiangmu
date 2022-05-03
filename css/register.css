@@ -114,20 +114,28 @@ header {
     padding-left: 187px;
     color: #b2b2b2;
     font-size: 12px;
+    display: flex;
 }
 .safe em {
     padding: 0 12px;
     font-style: normal;
     color: #fff;
+    width: 16px;
 }
 .ruo {
     background-color: #de1111;
+    display: none;
+   
 }
 .zhong {
     background-color: #40b83f;
+    display: none;
+   
 }
 .qiang {
     background-color: #f79100;
+    display: none;
+   
 }
 .agree {
     padding-left: 114px;
