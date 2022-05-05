@@ -4,7 +4,7 @@ class list{
         this.Num = 1;
         //获取商品列表  默认一页20条
         this.getData(1);
-        //给商品列表的加入购物车  绑定事件
+        //给商品列表的加入购物车  绑定事件 和图片保存到跳转放大镜页面事件
         this.$('.sk_bd ul').addEventListener('click', this.clickAddFn.bind(this));
         //给列表1到10绑定事件
         this.$('.page_num').addEventListener('click',this.clickNumFn.bind(this));
@@ -25,7 +25,7 @@ class list{
         data.list.forEach(goods => {
           // console.log(goods);
           html += `<li class="sk_goods" data-id="${goods.goods_id}">
-          <a href="detail.html"><img src="${goods.img_big_logo}" alt=""></a>
+          <a href="javascript: "><img src="${goods.img_big_logo}" alt="" class="wlimg"></a>
           <h5 class="sk_goods_title">${goods.title}</h5>
           <p class="sk_goods_price"><em>¥${goods.current_price}</em> <del>￥${goods.price}</del></p>
           <div class="sk_goods_progress">
@@ -45,14 +45,14 @@ class list{
     
     }
     //加入购物车的事件12
-    async clickAddFn(e){
+    async clickAddFn(e){           
         //判断用户是否登录   
         //用户登录会保存localStorage值
         let token = localStorage.getItem('token');
         // console.log(token);
         //未登录就会跳转登录页面   设定的参数还会返回到这个页面
         //location.assign (url) 跳转到这个页面  能后退
-        if (!token){ location.assign('./login.html?ReturnUrl=./list.html');}
+        // if (!token){ location.assign('./login.html?ReturnUrl=./list.html');}
         //判断点击的是否是  立即抢购
         if (e.target.className=='sk_goods_buy') {
             //获取商品id或用户id获取
@@ -79,6 +79,10 @@ class list{
                     location.assign('./cart.html');
                 }
             }
+        }
+        //判断点击的是否是   图片
+        if(e.target.className=='wlimg'){
+            this.clickImgFn(e.target);
         }
 
     }
@@ -161,7 +165,13 @@ class list{
         this.Num = text;
     }
 
-
+    //点击图片的事件
+    clickImgFn(target){
+        //获取这个商品的id
+        let id= target.parentNode.parentNode.dataset.id;
+        // console.log(id);
+        location.assign(`./detail1.html?${id}`)
+    }
 
 
 

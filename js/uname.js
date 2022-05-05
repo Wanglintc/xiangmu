@@ -24,7 +24,8 @@ class Uname{
         //保存地址的页面 并跳转
         let s =a.replace('http://127.0.0.1:5500/','');
         // console.log(s);
-        if (!token ||res.data.code==401) {
+        //等于401  是登录过期   等于0是未登录
+        if (!token ||res.data.code==401 ||res.data.code==0) {
             location.assign(`./login.html?ReturnUrl=./${s}`);
         }
         //当登录成功时

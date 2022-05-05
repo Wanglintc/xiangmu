@@ -51,7 +51,7 @@ class Cart{
                     <li class="yui3-u-1-8">
                     </li>
                     <li class="yui3-u-1-8">
-                        <span class="price">${val.price}</span>
+                        <span class="price">${val.current_price}</span>
                     </li>
                     <li class="yui3-u-1-8">
                         <div class="clearfix">
@@ -62,7 +62,7 @@ class Cart{
                         <div class="youhuo">有货</div>
                     </li>
                     <li class="yui3-u-1-8">
-                        <span class="sum">${(val.price-0)*(val.cart_number-0)}</span>
+                        <span class="sum">${(val.current_price*val.cart_number-0).toFixed(2)}</span>
                     </li>
                     <li class="yui3-u-1-8">
                         <div class="del1">
@@ -186,14 +186,14 @@ class Cart{
         this.$('.sumprice-top .summoney').innerHTML = totalPrice;
     }
     //+ -的回调事件
-    clickPigeFn(e){
+    async clickPigeFn(e){
         // console.log(123);
         // console.log(e.target.classList[1]);
         //++
         if (e.target.classList[1]=='plus') {
             // console.log(123);
             ++e.target.previousElementSibling.value;
-            this.NumFn(e);  
+            await this.NumFn(e);  
             this.getNumPriceFN();  
         }
         //--
@@ -202,7 +202,7 @@ class Cart{
             if (e.target.nextElementSibling.value==1) e.target.nextElementSibling.value=2;
 
             --e.target.nextElementSibling.value;
-            this.NumFn(e);
+            await this.NumFn(e);
             this.getNumPriceFN();  
         }
         //因为是个商品的总div绑定的事件  在这里出现  会导致bug
@@ -210,7 +210,7 @@ class Cart{
     }
     //计算单个商品总价的方法
     totalPrice(e){
-        e.target.parentElement.parentElement.nextElementSibling.lastElementChild.innerHTML=(e.target.parentElement.parentElement.previousElementSibling.firstElementChild.innerHTML-0)*(e.target.parentElement.firstElementChild.nextElementSibling.value-0);
+        e.target.parentElement.parentElement.nextElementSibling.lastElementChild.innerHTML=((e.target.parentElement.parentElement.previousElementSibling.firstElementChild.innerHTML-0)*(e.target.parentElement.firstElementChild.nextElementSibling.value-0)).toFixed(2);
     }
     //发送ajax请求保存修改数量
     async NumFn(e){
