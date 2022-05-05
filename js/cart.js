@@ -163,7 +163,7 @@ class Cart{
         let totalNum =0;
         let totalPrice =0;
         //获取所有商品的列表
-        let goods = this.$('.goods-list');
+        let goods = document.querySelectorAll('.goods-list');
         // console.log(goods);
         //循环所有选中的商品  并保存
         goods.forEach(val=>{
@@ -264,7 +264,7 @@ class Cart{
         // console.log(this.$('.good-checkbox'));
         //准备个空数组保存选中的id值
         let sumId = [];
-        this.$('.good-checkbox').forEach(val=>{
+        document.querySelectorAll('.good-checkbox').forEach(val=>{
             if (val.checked) {
                sumId.push(val.parentElement.parentElement.dataset.id-0) 
             }

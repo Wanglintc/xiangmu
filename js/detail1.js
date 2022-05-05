@@ -6,6 +6,11 @@ class detail1{
         this.index = 0;
     }
     async getData(){
+        //判断打开结算页面  如果未携带参数就跳回到购物车页面
+        if (!location.search) {
+            //未携带参数
+            location.assign('./list.html');
+        }else{
         //获取用户id
         let unama = localStorage.getItem('user_id');
         //获取商品id  list页面中会传个id值
@@ -77,7 +82,7 @@ class detail1{
         }
        
     }
-   
+   }
      
     //鼠标移入小图事件0
     overFn(){

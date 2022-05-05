@@ -2,10 +2,11 @@ class Pay{
     constructor(){
         //获取结算商品的列表
         this.getData();
+        //给提交订单添加点击事件
+        this.$('.me-commit').addEventListener('click',this.clickFn.bind(this));
     }
     getData(){
         //判断打开结算页面  如果未携带参数就跳回到购物车页面
-        
         if (!location.search) {
             //未携带参数
             location.assign('./cart.html');
@@ -20,7 +21,7 @@ class Pay{
         //把字符串改成数组
         goodsId = goodsId.split(',');
         // console.log(goodsId);
-        
+        // console.log(goodsId);
 
 
         //发送请求获取商品的详细信息 因为async有就近原则
@@ -57,6 +58,49 @@ class Pay{
         this.$('.message')[3].innerHTML+=html;
         
     }
+
+
+
+
+    //提交订单的点击事件
+    async clickFn(){
+        // console.log(123);
+        //用户id
+        let uname = localStorage.getItem('user_id');
+        let param = 'id='+uname;
+        let res = await axios.post('http://localhost:8888/cart/pay',param);
+        // console.log(res);
+        let { data , status } =res;
+        if (status==200) {
+            if (data.code==1) {
+                let goodsId =location.search;
+                // console.log(goodsId); 
+                goodsId = goodsId.substring(1,goodsId.length);
+                //把字符串改成数组
+                goodsId = goodsId.split(',');
+                goodsId.forEach(val=>{
+                    this.removeFn(val);
+                })
+            }
+        }
+    }
+    async removeFn(a){
+         //用户id
+         let uname = localStorage.getItem('user_id');
+         let res = await axios.get(`http://localhost:8888/cart/remove?id=${uname}&goodsId=${a}`);
+        //  console.log(res);
+         let { data , status } = res;
+        //  console.log(data,status);
+        if (status ==200) {
+            if (data.code==1) {
+                alert('支付成功  点击确认会跳转到购物车页面');
+                location.assign('./cart.html');
+            }
+        }
+    }
+
+
+
 
      //获取节点函数
      $(tag) {
