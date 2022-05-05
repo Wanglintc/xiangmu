@@ -133,9 +133,20 @@
 .t-img li {
 	position: absolute;
 }
+.t-img .ca{
+	z-index: 5;
+	/* opacity: 1; */
+}
+.wl{
+	position: relative;
+	width: 790px;
+	height: 340px;
+}
+
 .arrow-l,
 .arrow-r {
 	position: absolute;
+	z-index: 6;
 	top: 50%;
 	width: 30px;
 	height: 60px;

@@ -38,24 +38,8 @@ class Register{
             }else{
             e.target.nextElementSibling.innerHTML='<i class="hint_icon"></i>请输入6~16位密码!'
             }    
-            //找到的是数字  是弱等级
-           /* if (e.target.value.search(/0-9/g)!=-1) {
-               this.$('.ruo').style.display = 'block';
-               this.$('.zhong').style.display = 'none';
-               this.$('.qiang').style.display = 'none';
-            }
-            //找到字母  是中等级
-            if (e.target.value.search(/[a-z][A-Z]/g!=-1)) {
-                this.$('.zhong').style.display = 'block';
-                this.$('.ruo').style.display = 'none';
-                this.$('.qiang').style.display = 'none';
-            }
-            if (e.target.value.search(/\W/g!=-1)){
-                //找到字母是高等级
-                this.$('.ruo').style.display = 'none';
-                this.$('.qiang').style.display = 'none';
-                this.$('.zhong').style.display = 'block';
-            } */
+            this.PasswordStrengthFn(e.target);
+            // console.log(e.target);
         }
         //当确认密码框改变时  必须和密码框一致
         if (e.target.id=='repsw') {
@@ -76,6 +60,7 @@ class Register{
         let nickname = this.$('#tel').value;
         //确定协议框选中
         // console.log(this.$('.agree input').checked);
+        
         if (this.$('.agree input').checked) {
             let param = `username=${username}&password=${password}&rpassword=${rpassword}&nickname=${nickname}`;
            let res = await axios.post('http://localhost:8888/users/register',param) ;
@@ -91,7 +76,36 @@ class Register{
         }
     }
 
-
+    //判断密码强度的函数
+    PasswordStrengthFn(target){
+        let a,b,c = 0;
+        let res1 = /\d+/;
+        let res2 = /[a-z A-Z]+/;
+        let res3 = /\W+/;
+        a = res1.test(target.value)?1:0;
+        b = res2.test(target.value)?1:0;
+        c = res3.test(target.value)?1:0;
+        if (a+b+c ==0) {
+            this.$('.ruo').style.display ='none';
+            this.$('.zhong').style.display ='none';
+            this.$('.qiang').style.display ='none';
+        }
+        if (a+b+c ==1) {
+            this.$('.ruo').style.display ='block';
+            this.$('.zhong').style.display ='none';
+            this.$('.qiang').style.display ='none';
+        };
+        if (a+b+c ==2) {
+            this.$('.ruo').style.display ='none';
+            this.$('.zhong').style.display ='block';
+            this.$('.qiang').style.display ='none';
+        };
+        if (a+b+c ==3) {
+            this.$('.ruo').style.display ='none';
+            this.$('.zhong').style.display ='none';
+            this.$('.qiang').style.display ='block';
+        };
+    }
 
 
 

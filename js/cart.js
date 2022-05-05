@@ -11,7 +11,9 @@ class Cart{
         // 给 +  -绑定点击事件
         this.$('.cart-list').addEventListener('click',this.clickPigeFn.bind(this));
         //给清空购物车绑定点击事件
-        this.$('.sum-btn1').addEventListener('click',this.clearFn.bind(this))
+        this.$('.sum-btn1').addEventListener('click',this.clearFn.bind(this));
+        //给结算绑定点击事件
+        this.$('.sum-btn').addEventListener('click',this.settlementFn.bind(this));
     }
     //获取购物车的列表
     async getData(){
@@ -115,6 +117,7 @@ class Cart{
         })
         this.getNumPriceFN();
         this.selAllFN();
+
     }
     //单个商品选中的点击事件
     async selectFN(e){
@@ -150,7 +153,7 @@ class Cart{
             console.log(res1);*/
             }
             this.getNumPriceFN();
-           
+
         }
         
     }
@@ -166,12 +169,18 @@ class Cart{
         goods.forEach(val=>{
             // console.log(val.firstElementChild.firstElementChild.checked);
             if (val.firstElementChild.firstElementChild.checked) {
-                totalPrice+=(val.lastElementChild.previousElementSibling.firstElementChild.innerHTML - 0);
+                totalPrice=val.lastElementChild.previousElementSibling.firstElementChild.innerHTML - 0 + totalPrice ;
 
                 totalNum +=(val.lastElementChild.previousElementSibling.previousElementSibling.firstElementChild.lastElementChild.previousElementSibling.value  - 0);
-                // console.log(val.lastElementChild.previousElementSibling.previousElementSibling.firstElementChild.lastElementChild.previousElementSibling);
+               
+               
             }
+            // console.log(val);
+            // console.log(val.lastElementChild.previousElementSibling.firstElementChild.innerHTML);
+            // console.log(val.lastElementChild.previousElementSibling.previousElementSibling.firstElementChild.lastElementChild.previousElementSibling.value);
         })
+       
+        // console.log(totalPrice,totalNum);
         //把商品的数量和价格追加到页面中
         this.$('.sumprice-top strong').innerHTML = totalNum;
         this.$('.sumprice-top .summoney').innerHTML = totalPrice;
@@ -180,22 +189,24 @@ class Cart{
     clickPigeFn(e){
         // console.log(123);
         // console.log(e.target.classList[1]);
+        //++
         if (e.target.classList[1]=='plus') {
             // console.log(123);
             ++e.target.previousElementSibling.value;
-            this.NumFn(e);
-            
-            
+            this.NumFn(e);  
+            this.getNumPriceFN();  
         }
+        //--
         if (e.target.classList[1]=='mins') {
             // console.log(456);
-            if (e.target.nextElementSibling.value==1) return;
+            if (e.target.nextElementSibling.value==1) e.target.nextElementSibling.value=2;
 
             --e.target.nextElementSibling.value;
             this.NumFn(e);
+            this.getNumPriceFN();  
         }
         //因为是个商品的总div绑定的事件  在这里出现  会导致bug
-       
+          
     }
     //计算单个商品总价的方法
     totalPrice(e){
@@ -229,7 +240,7 @@ class Cart{
         let uname = localStorage.getItem('user_id')-0;
         let param = `id=${uname}&type=1`;
         let res = await axios.post('http://localhost:8888/cart/select/all',param);
-        console.log(res);
+        // console.log(res);
     }
     //清空购物车的事件
     async clearFn(){
@@ -247,7 +258,32 @@ class Cart{
             }
         }
     }
+    //结算绑定的点击事件
+    async settlementFn(){
+        //获取选中商品的id值
+        // console.log(this.$('.good-checkbox'));
+        //准备个空数组保存选中的id值
+        let sumId = [];
+        this.$('.good-checkbox').forEach(val=>{
+            if (val.checked) {
+               sumId.push(val.parentElement.parentElement.dataset.id-0) 
+            }
+        })
+        // console.log(sumId);
+        //准备把id数组值分割加入字符串
+        let param ='';
+        sumId.forEach(val=>{
+            param+=val+',';
+        })
+        // console.log(param);
+        //多一个，
+        param=param.slice(0,param.length-1);
+        // console.log(param);
+        //把参数拼接到跳转的地址上
+        location.assign(`./pay.html?${param}`);
 
+        
+    }
 
 
 
