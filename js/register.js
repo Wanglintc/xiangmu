@@ -51,7 +51,7 @@ class Register{
         }
     }
 
-    //点击事件
+    //点击事件  信息错误也会发送请求  没有输入错误的处理
     async registeredFn(){
         //获取post传参的数据
         let username = this.$('#code').value;
@@ -64,10 +64,11 @@ class Register{
         if (this.$('.agree input').checked) {
             let param = `username=${username}&password=${password}&rpassword=${rpassword}&nickname=${nickname}`;
            let res = await axios.post('http://localhost:8888/users/register',param) ;
-           console.log(res);
+        //    console.log(res);
         let { data ,status}=res;
         if(status==200){
             if (data.code==1) {
+                //注册成功直接返回登录页面   登录成功 跳到首页
                 location.assign('./login.html?ReturnUrl=./index.html')
             }
         }

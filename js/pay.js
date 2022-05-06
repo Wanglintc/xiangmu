@@ -36,10 +36,11 @@ class Pay{
       
        
     }
+    //此处的发送请求是获取商品的详细信息  
     async axiosFn(a){
         let res = await axios.get(`http://localhost:8888/goods/item?id=${a}`);
         // console.log(res);
-
+        //加入到页面中
         let html =`<div class="me-bd" data-id="${res.data.info.goods_id}">
         <span>订单详情</span>
         <div class="me-bs">
@@ -68,6 +69,7 @@ class Pay{
         //用户id
         let uname = localStorage.getItem('user_id');
         let param = 'id='+uname;
+        //此处的请求是支付请求（不会改变后台数据  只会给个返回值）//所以支付成功后  在发送个删除购物车商品的请求
         let res = await axios.post('http://localhost:8888/cart/pay',param);
         // console.log(res);
         let { data , status } =res;
@@ -84,6 +86,7 @@ class Pay{
             }
         }
     }
+    //购物车商品的的删除请求  删除成功  会跳转会购物车列表
     async removeFn(a){
          //用户id
          let uname = localStorage.getItem('user_id');
